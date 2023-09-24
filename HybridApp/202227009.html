@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>202227009 조샛별</title>
+   <style>
+       .box1 {
+           width: 400px;
+           height: 50px;
+           border: 1px solid black;
+           text-align: center;
+           display: flex;
+           align-items: center;
+       }
+       .box1 img {
+           width: 50px;
+           height: 50px;
+           margin-right: 10px;
+       }
+       .box2 {
+           width: 100px;
+           height: 150px;
+           float: left;
+           border: 1px solid black;
+           text-align: center;
+       }
+       .box3 {
+           width: 300px;
+           height: 150px;
+           float: left;
+           border: 1px solid black;
+           text-align: center;
+       }
+   </style>
+</head>
+<body>
+   <div class="box1" id="box1">
+       <label for="username">아이디:</label>
+       <input type="text" id="username" name="username">
+       <button id="loginButton">로그인</button>
+   </div>
+   <div class="box2" id="box2">영역2
+       <div id="button1">버튼1</div><br>
+       <div id="button2">버튼2</div><br>
+       <div id="button3">버튼3</div><br>
+   </div>
+   <div class="box3" id="box3">영역3</div>
+
+   <script>
+       var initialContent = document.getElementById("box1").innerHTML; // 초기 내용 저장
+       var isLoggedIn = false;
+       var button1Content = ""; // 버튼1의 내용을 저장하는 변수
+       var button3Content = ""; // 버튼3의 내용을 저장하는 변수
+
+       // 로그인/로그아웃 버튼 클릭 시 실행될 함수
+       document.getElementById("loginButton").addEventListener("click", function () {
+           var box1 = document.getElementById("box1");
+           var loginButton = document.getElementById("loginButton");
+
+           if (!isLoggedIn) {
+               // 이미지와 로그아웃 버튼을 보여주고 아이디 입력창과 "로그인" 버튼을 숨김
+               box1.innerHTML = '<img src="https://i.namu.wiki/i/-3Q8hW_R0h78mfzl3R3vi5nTYNnwcmH8iV4TSe_gXLPIAcQCZKpK7vyCMi7cLJ5MFulWZa0l7F8UnlnAat50GOlrW3kDftSWtublLLxBqtNFktRDtqokPYT8kgPKZjksN3edRNbRFeHAwPlGeWVrBg.webp" alt="토끼" style="width: 50px; height: 50px;"> 조샛별' +
+                                '<button id="logoutButton">로그아웃</button>';
+               isLoggedIn = true;
+               
+               // 로그아웃 버튼 클릭 시 초기 내용으로 되돌리기
+               document.getElementById("logoutButton").addEventListener("click", function () {
+                   box1.innerHTML = initialContent;
+                   isLoggedIn = false;
+                   clearBox3();
+               });
+           } else {
+               // 아이디 입력창과 "로그인" 버튼을 다시 보여주고 이미지와 로그아웃 버튼을 숨김
+               box1.innerHTML = initialContent;
+               isLoggedIn = false;
+               clearBox3();
+           }
+       });
+
+       // 버튼 클릭 시 영역3의 내용 변경
+       document.getElementById("button1").addEventListener("click", function () {
+           if (button1Content === "") {
+               document.getElementById("box3").textContent = "버튼1 안녕하세요 저는 VR게임앱학과 202227009 조샛별입니다.";
+               button1Content = document.getElementById("box3").textContent;
+           } else {
+               document.getElementById("box3").textContent = button1Content;
+               button1Content = "";
+           }
+       });
+
+       document.getElementById("button2").addEventListener("click", function () {
+           document.getElementById("box3").textContent = "버튼2 이은석교수님 소감문";
+       });
+
+       document.getElementById("button3").addEventListener("click", function () {
+           if (button3Content === "") {
+               if (document.getElementById("box3").textContent) {
+                   button3Content = document.getElementById("box3").textContent;
+               }
+               document.getElementById("box3").textContent = "저장되었습니다.";
+           } else {
+               document.getElementById("box3").textContent = button3Content;
+               button3Content = "";
+           }
+       });
+
+       // 영역3 초기화 함수
+       function clearBox3() {
+           document.getElementById("box3").textContent = "영역3";
+       }
+   </script>
+</body>
+</html>
