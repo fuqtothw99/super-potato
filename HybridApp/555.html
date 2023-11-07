@@ -7,7 +7,7 @@
     <title>Snake Game</title>
     <style>
         #score {
-            color: lime;
+            color: darkgreen;
             font-weight: 900;
             position: absolute;
             top: 20px;
@@ -15,7 +15,7 @@
         }
 
         #warm {
-            background-color: black;
+            background-color: ivory;
             border: 10px groove mediumseagreen;
         }
     </style>
@@ -45,11 +45,12 @@
         var PlayerPosY = 100;
 
         const degree = Math.PI / 360.0;
+         
         var angle = 0;
         var obstacles = [];
         var obstacleSpeed = 1; // 장애물 이동 속도
         var obstacleSize = 50; // 장애물 크기
-        var obstacleSpawnRate = 60; // 장애물 생성 속도 (60프레임마다 생성)
+        var obstacleSpawnRate = 80; // 장애물 생성 속도 (60프레임마다 생성)
 
         // 마우스 이동 이벤트 리스너 추가
         document.addEventListener('mousemove', updateMouseCursor);
@@ -88,14 +89,19 @@
         var symbolY = Math.floor(Math.random() * canvas.height);
 
         // 사과 크기
-        var symbolSize = 15;
+        var symbolSize = 30;
 
-        // 사과 그리기 함수
-        function drawSymbol() {
-            ctx.beginPath();
-            ctx.arc(symbolX, symbolY, symbolSize, 0, 2 * Math.PI);
-            ctx.fillStyle = 'orange';
-            ctx.fill();
+        // 이미지 객체 생성 및 로드
+        const symbolImage = new Image();
+        symbolImage.src = 'https://i.ibb.co/cTSyzMW/1.png';
+
+        symbolImage.onload = function() {
+            drawSymbolWithImage(symbolImage, symbolX, symbolY, symbolSize);
+        };
+
+        // 이미지로 사과 그리는 함수
+        function drawSymbolWithImage(image, x, y, size) {
+            ctx.drawImage(image, x - size, y - size, size * 2, size * 2);
         }
 
         // 장애물 그리기 함수
@@ -103,6 +109,7 @@
             ctx.beginPath();
             ctx.save();
             ctx.translate(x, y);
+
             ctx.rotate(angle);
 
             if (type === 0) {
@@ -110,15 +117,15 @@
                 ctx.moveTo(-obstacleSize / 2, -obstacleSize / 2);
                 ctx.lineTo(obstacleSize / 2, -obstacleSize / 2);
                 ctx.lineTo(0, obstacleSize / 2);
-                ctx.fillStyle = '#FF0000';
+                ctx.fillStyle = 'yellow';
             } else if (type === 1) {
                 // 사각형 그리기
                 ctx.rect(-obstacleSize / 2, -obstacleSize / 2, obstacleSize, obstacleSize);
-                ctx.fillStyle = '#00FF00';
+                ctx.fillStyle = 'aqua';
             } else {
                 // 원 그리기
                 ctx.arc(0, 0, obstacleSize / 2, 0, 2 * Math.PI);
-                ctx.fillStyle = '#0000FF';
+                ctx.fillStyle = 'fuchsia';
             }
 
             ctx.fill();
@@ -131,13 +138,13 @@
             for (var i = 0; i < obstacles.length; i++) {
                 var obstacle = obstacles[i];
                 if (
-                    PlayerPosX - 1 < obstacle.x + obstacleSize &&
-                    PlayerPosX + 1 > obstacle.x - obstacleSize &&
-                    PlayerPosY - 1 < obstacle.y + obstacleSize &&
-                    PlayerPosY + 1 > obstacle.y - obstacleSize
-                ) {
+                    PlayerPosX - 1 < obstacle.x + obstacleSize /2 &&
+                    PlayerPosX + 1 > obstacle.x - obstacleSize /2 &&
+                    PlayerPosY - 1 < obstacle.y + obstacleSize /2 &&
+                    PlayerPosY + 1 > obstacle.y - obstacleSize /2
+                ) { 
                     // 장애물과 뱀이 충돌하면 게임 오버
-                    alert("게임 오버! 점수: " + tailSegments.length);
+                    alert("게임 오버!! 당신의 점수: " + tailSegments.length);
                     obstacles = [];
                     tailSegments = [];
                     startTime = Date.now();
@@ -162,14 +169,12 @@
                 for (var i = 0; i < 4; i++) {
                     ctx.beginPath();
                     ctx.arc(PlayerPosX - 15 * i, PlayerPosY, segmentSize - i, 0, 2 * Math.PI);
-                    ctx.fillStyle = 'white';
+                    ctx.fillStyle = 'lime';
                     ctx.fill();
-                    segmentSize--;
+                    
+                    var segmentSize = 14;
                 }
             }
-
-            // 뱀 꼬리 그리기
-            drawWormSegments();
 
             // 꼬리 세그먼트 그리기
             for (var i = 0; i < tailSegments.length; i++) {
@@ -181,9 +186,11 @@
                 prevPosY = currentPosY;
                 ctx.beginPath();
                 ctx.arc(tailSegments[i].x - 57, tailSegments[i].y, 6, 0, 2 * Math.PI);
-                ctx.fillStyle = 'white';
+                ctx.fillStyle = 'lime';
                 ctx.fill();
             }
+
+            drawWormSegments()
 
             // 사과와 뱀 충돌 감지
             if (
@@ -224,14 +231,31 @@
             for (var i = 0; i < obstacles.length; i++) {
                 var obstacle = obstacles[i];
                 obstacle.x -= obstacleSpeed;
-                drawObstacle(obstacle.x, obstacle.y, obstacle.type, obstacle.angle);
+                obstacle.angle += 0.02; // 장애물의 회전 속도 조절
+
+                ctx.save();
+
+                ctx.translate(obstacle.x, obstacle.y);
+                ctx.rotate(obstacle.angle);
+
+                drawObstacle(0, 0, obstacle.type, 0);
+
+                ctx.restore();
+            }
+
+            // 두 장애물이 충돌하는지 확인
+            function isObstacleColliding(obstacle1, obstacle2) {
+            const dx = obstacle1.x - obstacle2.x;
+            const dy = obstacle1.y - obstacle2.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            return distance < obstacleSize; // 장애물 크기를 반지름으로 사용하여 충돌 여부 확인
             }
 
             // 시간이 흐를수록 게임이 어려워지도록 조절 (장애물 이동 속도 증가)
             obstacleSpeed += 0.001;
 
             // 사과 그리기
-            drawSymbol();
+            drawSymbolWithImage(symbolImage, symbolX, symbolY, symbolSize);
 
             // 충돌 감지 호출
             checkCollision();
@@ -244,7 +268,7 @@
         function updateScoreboard() {
             var elapsedTime = Math.floor((Date.now() - startTime) / 1000);
             var score = document.getElementById('score');
-            score.textContent = "Time: " + elapsedTime + "s / Length: " + tailSegments.length;
+            score.textContent = "Time: " + elapsedTime + "sec / Lenth: " + tailSegments.length;
         }
 
         // 게임 루프 설정 (60프레임/초)
