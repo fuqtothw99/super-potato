@@ -1,0 +1,15 @@
+{"username":"박하은","password":"2541","bestScore":2680}
+{"username":"박하은","password":"1111","bestScore":76}
+{"username":"박하은","password":"52244","bestScore":0}
+{"username":"박하은","password":"44555","bestScore":0}
+{"username":"박하은","password":"1234","bestScore":0}
+{"username":"1234","password":"1234","bestScore":7060}
+{"username":"테스트","password":"1234","bestScore":8492}
+{"username":"테스트2","password":"1234","bestScore":3440}
+{"username":"dfertyui","password":"1111","bestScore":1260}
+{"username":"w","password":"1234","bestScore":2680}
+{"username":"hi","password":"5555","bestScore":0}
+{"username":"Hi","password":"5555","bestScore":1068}
+{"username":"유유","password":"5598","bestScore":0}
+{"username":"유유","password":"5555","bestScore":0}
+{"username":"';l","password":"1111","bestScore":0}

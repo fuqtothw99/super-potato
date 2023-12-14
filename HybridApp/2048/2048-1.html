@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정박조_2048</title>
+    <link rel = "stylesheet" type = "text/css" href = "2048.css">
+</head>
+<body>
+    <!-- 화면 크기 -->
+    <div id = 'game2048'>
+
+      <!-- 로그인 버튼 -->
+      <div id = 'loginBtn'><p>log</p></div>
+
+      <!-- 로그인 내용 -->
+      <div id = 'loginText'>
+        <h2>로그인</h2>
+        이&emsp;&emsp;&emsp;름&emsp;<input type = "text" id = "username" placeholder = "이름을 입력하세요"><br>
+        비 밀 번 호&emsp;<input type = "password" id = "password" placeholder="숫자 네 자리를 입력하세요"><br>
+        <!-- 로그인 버튼 -->
+        <button id="rloginBtn">로그인</button><br>
+        <form action="2048-1.html"><button id="logout">로그아웃</button></form>
+      </div>
+
+
+      <!-- 로그인-홈 버튼 -->
+      <div id ='loginHome'><p class = 'textStyle'>홈</p></div>
+
+      <!-- 설명서 버튼 -->
+      <div id = 'manualBtn'><p>?</p></div>
+      
+      <!-- 설명서 내용 -->
+      <div id = 'manualText'><p>• 플레이어는 화살표 키를 사용하여 보드 위의 타일을 <br><br>&nbsp;&nbsp;이동시킵니다.<br><br><br>
+        • 같은 그림이 있는 타일이 닿으면 합쳐져 다른 그림의 <br><br>&nbsp;&nbsp;타일이 됩니다.<br><br><br>
+        • 목표는 흙에 열매가 있는 타일을 만드는 것입니다.<br><br><br>
+        • 보드가 가득 차고 더 이상 이동할 수 없을 때까지 <br><br>&nbsp;&nbsp;타일을 만들어야 합니다.<br><br><br>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;즐겁게 플레이하세요!</p></div>
+        
+        <!-- 설명서-홈 버튼 -->
+        <div id ='manualHome'><p class = 'textStyle'>홈</p></div>
+
+        <!-- 랭킹 버튼 -->
+        <div id = 'rankBtn'><p class = 'textStyle'>랭킹</p></div>
+
+        <!-- 랭킹 화면 -->
+        <div id = 'rankText'>
+          <h1>랭킹</h1>
+          <ol>
+            <li>&emsp;1&emsp;<span class ='userRank'>플레이어님</span><span class ='userRankNum'>0점</span></li>
+            <li>&emsp;2&emsp;<span class ='userRank'>플레이어님</span><span class ='userRankNum'>0점</span></li>
+            <li>&emsp;3&emsp;<span class ='userRank'>플레이어님</span><span class ='userRankNum'>0점</span></li>
+            <li>&emsp;4&emsp;<span class ='userRank'>플레이어님</span><span class ='userRankNum'>0점</span></li>
+            <li>&emsp;5&emsp;<span class ='userRank'>플레이어님</span><span class ='userRankNum'>0점</span></li>
+            <p>·</p>
+            <p>·</p>
+            <p>·</p>
+            <li>&emsp;<span class ='userRank'>플레이어님</span><span class ='userRankNum'>0점</span></li>
+          </ol>
+        </div>
+        
+      <!-- 게임의 제목 -->
+      <p id = 'gameName'>2048</p>
+
+      <!-- 게임 내 홈 버튼 및 점수 박스 -->
+      <div id ='home'><p class = 'textStyle'>홈</p></div>
+      <div class = 'scoreBox' id='score'><p class = 'scoreText'>Score</p><span id = 'scoreNum'>0</span></div>
+      <div class = 'scoreBox' id ='bestScore'><p class = 'scoreText'>Best Score</p><span id = 'bestScoreNum'>0</span></div>
+
+      <!-- 초기화 버튼 -->
+      <div id = 'reset'><p class = 'textStyle' id = 'resetText'>리셋</p></div>
+
+      <!-- 게임을 구현할 캔버스 -->
+      <canvas id = 'canvas' width = '420' height = '420'></canvas>
+        <div id = 'gameOverCheck'>
+          <h1><span id ='user'>플레이어</span>님의 점수는</h1>
+          <h1><span id = 'gameOverScore'>0</span>점</h1>
+          <h1>다시 시작하시겠습니까?</h1>
+          <button class = 'reStartBtn' id = 'reStartBtn_Yes'>네</button><button class = 'reStartBtn' id = 'reStartBtn_No'>아니오</button>
+        </div>
+      <!-- 시작 버튼 -->
+      <div id = 'startBtn'><p id = 'startText'>START</p></div>
+  </div>
+  <!-- 코드 -->
+  <script type="text/javascript" src="2048.js"></script>
+   
+</body>
+</html>

@@ -1,0 +1,381 @@
+body {
+  background: #d0be9b;
+}
+
+/* 게임 화면 크기 및 바탕색을 설정하고 중앙으로 정렬 */
+#game2048{
+  background-color : #614D25;
+  margin : auto;
+  width : 500px;
+  height : 750px;
+}
+
+/* 로그인 화면 ui */
+#loginBtn{
+  position : absolute;
+  float : left;
+  margin-top : 16px;
+  margin-left : 16px;
+  width : 60px;
+  height : 60px;
+  border-radius : 10px;
+  background-color : #C8B795;
+}
+
+/* 로그인 화면 안의 글씨 */
+#loginBtn p{
+  margin-top : 20px;
+  margin-left : 20px;
+  font-size : 16px;
+  width : 20px;
+  height : 20px;
+  font-weight: bold;
+  text-align : center;
+  color : #876F3F;
+}
+
+ /* 로그인 내용 */
+ #loginText{
+  display : none;
+  position : absolute;
+  margin-top : 170px;
+  margin-left : 40px;
+  margin-right : 40px;
+  width : 420px;
+  height : 520px;
+  border-radius : 10px;
+  text-align : center;
+  background-color : #E5D8BE;
+}
+
+#username{
+  margin-bottom : 4px;
+}
+
+#rloginBtn{
+  margin-top: 28px;
+  margin-left: -70px;
+}
+
+#logout{
+  position: relative;
+  margin-left: 100px;
+  top: -24px;
+}
+
+/* 로그인-홈 버튼 */
+#loginHome{
+  display : none;
+  float : left;
+  margin-top : 16px;
+  margin-left : 16px;
+  width : 60px;
+  height : 60px;
+  border-radius : 10px;
+  background-color : #C8B795;
+}
+
+/* 설명서 화면 ui */
+#manualBtn{
+  float : right;
+  margin-top : 16px;
+  margin-right : 16px;
+  width : 60px;
+  height : 60px;
+  border-radius : 10px;
+  background-color : #C8B795;
+}
+
+/* 설명서 화면 안의 글씨 */
+#manualBtn p{
+  margin-top : 20px;
+  margin-left : 20px;
+  font-size : 16px;
+  width : 20px;
+  height : 20px;
+  font-weight: bold;
+  text-align : center;
+  color : #876F3F;
+}
+
+/* 설명서 내용 */
+#manualText{
+  display : none;
+  position : absolute;
+  margin-top : 170px;
+  margin-left : 40px;
+  margin-right : 40px;
+  width : 420px;
+  height : 520px;
+  border-radius : 10px;
+  background-color : #E5D8BE;
+}
+
+#manualText p{
+  color: #614D25;
+  font-size: medium;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 30px;
+}
+
+/* 설명서-홈 버튼 */
+#manualHome{
+  display : none;
+  float : right;
+  margin-top : 16px;
+  margin-right : 16px;
+  width : 60px;
+  height : 60px;
+  border-radius : 10px;
+  background-color : #C8B795;
+}
+
+#rankBtn{
+  float : right;
+  margin-top : 16px;
+  margin-right : 16px;
+  width : 60px;
+  height : 60px;
+  border-radius : 10px;
+  background-color : #C8B795;
+}
+#rankBtn p{
+  margin-left : 12.5px;
+  margin-right : 12.5px;
+  margin-bottom : 20px;
+  width : 35px;
+}
+
+#rankText{
+  display : none;
+  position : absolute;
+  margin-top : 170px;
+  margin-left : 40px;
+  margin-right : 40px;
+  width : 420px;
+  height : 520px;
+  border-radius : 10px;
+  background-color : #E5D8BE;
+}
+
+#rankText h1{
+  text-align : center;
+  color: #614D25;
+}
+
+#rankText li{
+  margin-top : 16px;
+  list-style : none;
+  width : 340px;
+  height : 50px;
+  border-radius : 10px;
+  background-color : #C8B795;
+  font-size : 20px;
+  font-weight : bold;
+  color : #614D25;
+  /* 와 글씨 높이 맞추는 걸 지금 알았네 여태 완전 바보 짓 했구나,,, */
+  line-height: 50px;
+}
+
+#rankText p{
+  width : 340px;
+  height : 15px;
+  margin-top : 2px;
+  margin-bottom : 0;
+  line-height: 4px;
+  font-size : 54px;
+  text-align : center;
+  font-weight : bold;
+  color : #614D25;
+}
+
+#rankText li:last-child{
+  margin-top: 4px;
+}
+
+.userRankNum{
+  margin-right : 16px;
+  float : right;
+}
+
+/* 게임의 제목 */
+#gameName{
+  position : absolute;
+  width : 197px;
+  text-align : center;
+  margin-top: 40px;
+  margin-left : 145px;
+  margin-right : 145px;
+  font-size : 80px;
+  font-weight: bold;
+  color : #E5D8BE;
+}
+
+/* 인 게임 내 홈 버튼 */
+#home{
+  display : none;
+  position : absolute;
+  margin-top : 170px;
+  margin-left : 30px;
+  width : 60px;
+  height : 60px;
+  border-radius : 10px;
+  background-color : #C8B795;
+}
+
+.textStyle{
+  margin-top : 20px;
+  margin-bottom : 20px;
+  margin-left : 20px;
+  font-size : 16px;
+  width : 20px;
+  height : 20px;
+  font-weight: bold;
+  text-align : center;
+  color : #876F3F;
+}
+#resetText{
+  margin-left : 12.5px;
+  margin-right : 12.5px;
+  margin-bottom : 20px;
+  width : 35px;
+}
+
+/* 점수 박스 클래스 */
+.scoreBox{
+  display : none;
+  float : left;
+  width : 108px;
+  height : 60px;
+  text-align: center;
+  border-radius : 10px;
+  background-color : #C8B795;
+}
+
+/* 현재 점수 박스 */
+#score{
+  position :absolute;
+  margin-top : 170px;
+  margin-left : 220px;
+  margin-right : 8px;
+}
+
+/* 최고 점수 박스 */
+#bestScore{
+  position : absolute;
+  margin-top : 170px;
+  margin-left : 360px;
+  margin-right : 8px;
+}
+
+#scoreNum, #bestScoreNum{
+margin-top: 50px;
+font-size: 20px;
+font-weight: bold;
+color: white;
+}
+
+/* 점수박스텍스트 */
+.scoreText{
+  margin : 0;
+  font-size : 14px;
+  color : #876F3F;
+  font-weight : bold;
+}
+
+/* 게임 진행 도중 초기화 버튼 */
+#reset{
+  display : none;
+  position : absolute;
+  margin-top: 170px;
+  margin-left: 120px;
+  width : 60px;
+  height : 60px;
+  border-radius : 10px;
+  background-color : #C8B795;
+}
+
+/* 게임을 구현할 캔버스 */
+canvas{
+  position : absolute;
+  text-align : center;
+  border-radius : 10px;
+  background-color : #C8B795;
+  margin-top: 170px;
+  margin-left : 40px;
+  margin-right : 40px;
+}
+
+/* 게임 시작 버튼 */
+#startBtn{
+  position : absolute;
+  margin-top : 650px;
+  margin-left : 102px;
+  width : 285px;
+  height : 77px;
+  border-radius : 50px;
+  text-align : center;
+  background-color : #876F3F;
+}
+
+/* 게임 시작 버튼 안의 글씨 */
+#startText{
+  position: relative;
+  margin-top : 8px;
+  margin-left : 58px;
+  width : 169px;
+  height : 61px;
+  font-size : 40px;
+  font-weight : bold;
+  color : #E5D8BE;
+}
+
+/* 게임 오버 화면 */
+#gameOverCheck{
+  display : none;
+  position: absolute;
+  width : 500px;
+  height : 750px;
+  background-color: rgba(255, 255, 255, 80%);
+}
+
+#gameOverCheck h1{
+  text-align : center;
+  width : 500px;
+  height: 50px;
+  color : #614D25;
+}
+
+#gameOverCheck h1:first-child{
+  margin-top : 250px;
+  margin-bottom : 0;
+}
+
+#gameOverCheck h1:nth-child(2){
+  margin-top: 0;
+  margin-bottom : 0;
+}
+
+#gameOverCheck h1:last-child{
+  margin-top: 20px;
+  margin-bottom : 0;
+}
+
+.reStartBtn{
+  margin-left: 80px;
+  width : 150px;
+  height : 65px;
+  border-style : none;
+  border-radius : 50px;
+  text-align : center;
+  background-color : #876F3F;
+  font-size : 32px;
+  font-weight : bold;
+  color : #E5D8BE;
+}
+
+.reStartBtn:last-child{
+  margin-left: 40px;
+}
