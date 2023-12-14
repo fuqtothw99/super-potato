@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { display: block; }
+		</style>
+	</head>
+	<body>
+		<script type="module">
+			// 모듈을 가져와서 THREE 객체로 전부 가져옵니다.
+			import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+
+			// 씬(scene)을 생성합니다.
+			const scene = new THREE.Scene();
+
+			// 카메라(camera)를 생성합니다. 시야각은 75도, 종횡비는 뷰포트의 너비와 높이에 따라 동적으로 설정됩니다.
+			// 카메라가 물체를 렌더링하는 거리 범위는 0.1에서 1000까지입니다.
+			const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+			// WebGL 렌더러(renderer)를 생성하고 뷰포트의 크기에 맞게 설정합니다.
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+
+			// 렌더러의 배경색을 노란색(1, 1, 0)으로 설정합니다.
+			renderer.setClearColor(new THREE.Color(1, 1, 0));
+
+			// 렌더러의 DOM 요소를 body에 추가합니다.
+			document.body.appendChild(renderer.domElement);
+
+			// 사용할 기하학적 모형(geometry)을 생성합니다.
+			// 여기서는 구체(SphereGeometry)를 사용하고, 반지름이 1이고 가로 및 세로 8개의 세그먼트로 구성됩니다.
+			const geometry = new THREE.SphereGeometry(1, 8, 8);
+
+			// 사용할 셰이더 코드를 가져와 변수에 저장합니다.
+			var vShader = document.getElementById('vertexShader').innerHTML;
+			var fShader = document.getElementById('fragmentShader').innerHTML;
+
+			// 버텍스 쉐이더와 프래그먼트 쉐이더로 사용될 쉐이더 재질(material)을 생성합니다.
+			var material = new THREE.ShaderMaterial({
+			    vertexShader: vShader,
+			    fragmentShader: fShader
+			});
+
+			// 지정된 기하학적 모형(geometry)과 쉐이더 재질(material)을 사용하여 메쉬(object)를 생성합니다.
+			const object = new THREE.Mesh(geometry, material);
+
+			// 씬에 메쉬를 추가합니다.
+			scene.add(object);
+
+			// 카메라의 초기 위치를 설정합니다.
+			camera.position.z = 5;
+
+			// 애니메이션을 실행하는 함수를 정의합니다.
+			function animate() {
+			    // 애니메이션 프레임을 요청합니다.
+			    requestAnimationFrame(animate);
+			
+			    // 메쉬를 x축과 z축으로 회전시킵니다.
+			    object.rotation.x += 0.01;
+			    object.rotation.z += 0.01;
+			
+			    // 씬과 카메라를 사용하여 렌더러를 실행하여 화면에 렌더링합니다.
+			    renderer.render(scene, camera);
+			}
+
+			// 애니메이션 함수를 호출하여 애니메이션을 시작합니다.
+			animate();
+		</script>
+
+		<script id="vertexShader" type="x-shader/x-vertex">
+		varying vec3 vColor;																// 버텍스와 프래그먼트 쉐이더 간의 변수를 전달하기 위한 varying 변수 vColor를 선
+		void main() {
+			gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1);			// 객체의 위치(position)를 모델뷰 행렬과 투영 행렬을 사용하여 화면 좌표(gl_Position)로 변
+			float diff = dot(normalize(normalMatrix *normal),normalize(vec3(1,1,1)));		// 빛의 강도를 계산하여 vColor에 저장합니다.
+																							// normalMatrix와 normal을 사용하여 법선을 정규화하고, 지정된 방향 벡터(1,1,1)와의 내적을 계산합니다.
+			vColor = vec3(1.0,1.0,1.0) * diff; 								 				// 빛의 강도(diff)에 따라 vColor에 흰색(1.0, 1.0, 1.0)을 곱해 저장합니다.
+		}
+		</script> 
+
+		<script id="fragmentShader" type="x-shader/x-fragment">
+		varying vec3 vColor; 																// 버텍스 쉐이더로부터 전달된 varying 변수 vColor를 선언합니다
+		void main() {    		
+			gl_FragColor = vec4(vColor,1.0f);						 						// 버텍스 쉐이더로부터 받은 vColor 값을 사용하여 픽셀의 색상을 설정합니다.
+																							// vColor를 이용하여 화면에 표시할 색상을 결정하고, 투명도를 1.0으로 설정합니다.										
+		}
+		</script> 
+	</body>
+</html>

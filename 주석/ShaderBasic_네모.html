@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { display: block; }
+		</style>
+	</head>
+	<body>
+		<script type="module">
+			// 모듈을 가져와서 THREE 객체로 전부 가져옵니다.
+			import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+
+			// 씬을 생성합니다.
+			const scene = new THREE.Scene();
+
+			// 카메라를 생성합니다. 시야각은 75도, 종횡비는 뷰포트의 너비와 높이에 따라 동적으로 설정됩니다.
+			// 카메라가 물체를 렌더링하는 거리 범위는 0.1에서 1000까지입니다.
+			const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+			// WebGL 렌더러를 생성하고 뷰포트의 크기에 맞게 설정합니다.
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+
+			// 렌더러의 DOM 요소를 body에 추가합니다.
+			document.body.appendChild(renderer.domElement);
+
+			// 큐브의 기하학적 형태를 정의하는 상자(geometry)를 생성합니다.
+			const geometry = new THREE.BoxGeometry(1, 1, 1);
+
+			// 셰이더 코드를 가져와서 변수에 저장합니다.
+			var vShader = document.getElementById('vertexShader').innerHTML;
+			var fShader = document.getElementById('fragmentShader').innerHTML;
+
+			// 버텍스 쉐이더와 프래그먼트 쉐이더로 사용될 쉐이더 재질(material)을 생성합니다.
+			var material = new THREE.ShaderMaterial({
+			    vertexShader: vShader,
+			    fragmentShader: fShader
+			});
+
+			// 큐브를 생성하고 기하학적 형태와 재질을 설정하여 씬에 추가합니다.
+			const cube = new THREE.Mesh(geometry, material);
+			scene.add(cube);
+
+			// 카메라의 초기 위치를 설정합니다.
+			camera.position.z = 5;
+
+			// 애니메이션을 실행하는 함수를 정의합니다.
+			function animate() {
+			    // 애니메이션 프레임을 요청합니다.
+			    requestAnimationFrame(animate);
+			
+			    // 큐브를 회전시킵니다.
+			    cube.rotation.x += 0.01;
+			    cube.rotation.y += 0.01;
+			
+			    // 씬과 카메라를 사용하여 렌더러를 실행하여 화면에 렌더링합니다.
+			    renderer.render(scene, camera);
+			}
+
+			// 애니메이션 함수를 호출하여 애니메이션을 시작합니다.
+			animate();
+		</script>
+
+		<script id="vertexShader" type="x-shader/x-vertex">
+		void main() {
+			gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); 			// 모델뷰행렬(modelViewMatrix)과 투영행렬(projectionMatrix)을 곱하여
+																							// 객체의 위치(position)를 변환하여 화면 좌표(gl_Position)에 할당합니다.
+		}
+		</script> 
+
+		<script id="fragmentShader" type="x-shader/x-fragment">
+		void main() {
+			gl_FragColor = vec4(0.0, 0.5, 1.0, 1.0); // R, G, B, A							// 화면에 표시될 모든 픽셀에 대해 RGBA 색상 값을 설정합니다.
+																							// 여기서는 붉은색(R: 0.0), 중간 정도의 녹색(G: 0.5), 청색(B: 1.0), 불투명도(A: 1.0)로 설정합니다.
+		}
+		</script> 
+	</body>
+</html>

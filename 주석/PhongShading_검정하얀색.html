@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { display: block; }
+		</style>
+	</head>
+	<body>
+		<script type="module">
+			// 모듈을 가져와서 THREE라는 이름으로 모두 가져옴
+			import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+
+			// 씬을 생성
+			const scene = new THREE.Scene();
+
+			// 카메라를 생성: 시야각 75도, 종횡비는 화면 너비와 높이의 비율, 뒤로 0.1 단위, 앞으로 1000 단위까지의 시야
+			const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+			// WebGL 렌더러 생성
+			const renderer = new THREE.WebGLRenderer();
+
+			// 렌더러 크기를 현재 창의 크기로 설정
+			renderer.setSize(window.innerWidth, window.innerHeight);
+
+			// 렌더러의 DOM 요소를 body에 추가
+			document.body.appendChild(renderer.domElement);
+
+			// 구 생성 반지름 가로세로세그먼트 분할 각도세그먼트 분할
+			const geometry = new THREE.SphereGeometry(1, 32, 32);
+
+			// 'vertexShader' ID를 가진 스크립트 태그에서 버텍스 쉐이더 코드를 가져와 변수 vShader에 할당
+			var vShader = document.getElementById('vertexShader').innerHTML;
+
+			// 'fragmentShader' ID를 가진 스크립트 태그에서 프래그먼트 쉐이더 코드를 가져와 변수 fShader에 할당
+			var fShader = document.getElementById('fragmentShader').innerHTML;
+
+			// 버텍스 쉐이더와 프래그먼트 쉐이더를 사용하여 쉐이더 머티리얼을 생성
+			const material = new THREE.ShaderMaterial({
+			    vertexShader: vShader, // 버텍스 쉐이더 코드 설정
+			    fragmentShader: fShader // 프래그먼트 쉐이더 코드 설정
+			});
+
+			// geometry(지오메트리)와 쉐이더 머티리얼로 새로운 Mesh(객체) 생성
+			const cube = new THREE.Mesh(geometry, material);
+
+			// 새로 생성된 Mesh(객체)를 scene(씬)에 추가
+			scene.add(cube);
+
+			// 카메라의 z 축 위치를 5로 설정
+			camera.position.z = 5;
+
+			// 애니메이션 함수 정의
+			function animate() {
+			    requestAnimationFrame(animate); // 다음 프레임 요청
+			
+			    // cube(메쉬)의 x, y 축 회전값 조정
+			    cube.rotation.x += 0.01;
+			    cube.rotation.y += 0.01;
+			
+			    // scene을 camera로 렌더링
+			    renderer.render(scene, camera);
+			}
+
+			// 애니메이션 함수 호출하여 애니메이션 시작
+			animate();
+		</script>
+
+		<script id="vertexShader" type="x-shader/x-vertex">
+		    varying vec3 vNormal; 												// 벡터 vNormal을 정의하여 프래그먼트 쉐이더에 전달
+			
+		    varying vec3 vViewPosition; 										// 카메라의 위치를 프래그먼트 쉐이더에 전달
+			
+		    void main() {	
+		        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0); 		// 모델뷰 행렬을 사용하여 위치를 변환
+		        gl_Position = projectionMatrix * mvPosition; 					// 정점의 위치를 화면 공간으로 변환하여 gl_Position에 저장
+		        vNormal = normalMatrix * normal; 								// 정규화(normalization)된 법선 벡터를 계산하여 vNormal에 저장
+		        vViewPosition = -mvPosition.xyz; 								// 카메라의 위치를 vViewPosition에 저장
+		    }	
+		</script>	
+		
+		<script id="fragmentShader" type="x-shader/x-fragment">	
+		    varying vec3 vNormal; 												// 버텍스 쉐이더로부터 전달된 법선 벡터
+		    varying vec3 vViewPosition; 										// 버텍스 쉐이더로부터 전달된 카메라 위치 벡터
+			
+		    void main() {	
+		        vec3 normal = normalize(vNormal); 								// 법선 벡터를 정규화하여 normal에 저장
+		        vec3 viewDir = normalize(vViewPosition); 						// 카메라 방향 벡터를 정규화하여 viewDir에 저장
+		        vec3 lightDir = normalize(vec3(1.0, 1.0, 1.0)); 				// 광원 방향 벡터를 정규화하여 lightDir에 저장
+				
+		        float ambientStrength = 0.2; 									// 주변광 세기 설정
+		        vec3 ambient = ambientStrength * vec3(1.0, 1.0, 1.0); 			// 주변광 값 계산
+				
+		        float diff = max(dot(normal, lightDir), 0.0); 					// diffuse 값 계산
+		        vec3 diffuse = diff * vec3(1.0, 1.0, 1.0); 						// diffuse 값 계산
+				
+		        vec3 reflectDir = reflect(-lightDir, normal); 					// 반사 벡터 계산
+		        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0); 	// 반사광 값 계산
+		        vec3 specular = vec3(0.5) * spec; 								// 반사광 값 계산
+				
+		        vec3 result = (ambient + diffuse + specular); 					// 주변광, diffuse, 반사광 값 합산
+				
+		        gl_FragColor = vec4(result, 1.0); 								// 최종 픽셀 색상을 gl_FragColor에 설정
+		    }
+		</script>
+	</body>
+</html>

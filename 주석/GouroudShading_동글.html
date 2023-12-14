@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { display: block; }
+		</style>
+	</head>
+	<body>
+		<script type="module">
+			import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+
+			const scene = new THREE.Scene();
+			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+            
+            renderer.setClearColor(new THREE.Color(1, 1, 0));
+
+			const geometry = new THREE.SphereGeometry(1, 32, 32);
+			//const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+      var vShader = document.getElementById( 'vertexShader' ).innerHTML;
+      var fShader = document.getElementById( 'fragmentShader' ).innerHTML;
+      var material = new THREE.ShaderMaterial({
+          vertexShader : vShader,
+          fragmentShader : fShader
+      });
+			const cube = new THREE.Mesh( geometry, material );
+			scene.add( cube );
+
+			camera.position.z = 5;
+
+			function animate() {
+				requestAnimationFrame( animate );
+
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+
+				renderer.render( scene, camera );
+			}
+
+			animate();
+		</script>
+
+// 쉐이더 스크립트의 버텍스 쉐이더 부분 시작
+<script id="vertexShader" type="x-shader/x-vertex">
+    varying vec3 vNormal; 															// 버텍스 쉐이더에서 사용될 법선 벡터를 저장하기 위한 변수
+    varying vec3 vViewPosition; 													// 카메라에서 객체까지의 방향 벡터를 저장하기 위한 변수
+
+    void main() {
+        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0); 					// 객체의 위치를 모델-뷰 행렬에 곱하여 변환된 위치를 계산
+        gl_Position = projectionMatrix * mvPosition; 								// 객체의 위치를 화면 공간으로 변환하여 저장
+        vNormal = normalize(normalMatrix * normal);									// 객체의 정규화된 법선 벡터를 계산하여 저장
+        vViewPosition = -mvPosition.xyz;											// 카메라에서 객체까지의 방향 벡터를 계산하여 저장
+    }
+</script>
+																					// 쉐이더 스크립트의 버텍스 쉐이더 부분 끝
+
+																					// 쉐이더 스크립트의 프래그먼트 쉐이더 부분 시작
+<script id="fragmentShader" type="x-shader/x-fragment">
+    varying vec3 vNormal; 															// 버텍스 쉐이더에서 전달된 정규화된 법선 벡터
+    varying vec3 vViewPosition; 													// 버텍스 쉐이더에서 전달된 카메라에서 객체까지의 방향 벡터
+
+    void main() {
+        vec3 normal = normalize(vNormal); 											// 전달된 정규화된 법선 벡터를 다시 정규화하여 저장
+        vec3 viewDir = normalize(vViewPosition); 									// 전달된 카메라에서 객체까지의 방향 벡터를 정규화하여 저장
+        vec3 lightDir = normalize(vec3(1.0, 1.0, 1.0)); 							// 광원의 방향을 정규화하여 저장 (여기서는 고정된 방향을 사용)
+
+        float diff = max(dot(normal, lightDir), 0.0); 								// 빛과 법선 벡터 사이의 각도를 계산하여 빛의 강도를 결정
+        vec3 diffuse = diff * vec3(1.0, 1.0, 1.0); 									// 빛의 색상 값을 계산하여 저장
+
+        gl_FragColor = vec4(diffuse, 1.0); 											// 최종적으로 계산된 빛의 강도를 색상으로 출력
+    }
+</script>
+																					// 쉐이더 스크립트의 프래그먼트 쉐이더 부분 끝
+	</body>
+</html>
